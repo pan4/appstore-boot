@@ -1,0 +1,149 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="apanchenko (generated)" id="1555589162243-1">
+        <createTable tableName="app">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column defaultValueNumeric="0" name="downloads_count" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="package_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="package_name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-2">
+        <createTable tableName="app_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-3">
+        <createTable tableName="app_package">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="file" type="BLOB"/>
+            <column name="file_name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="small_icon" type="BLOB"/>
+            <column name="small_icon_name" type="VARCHAR(30)"/>
+            <column name="big_icon" type="BLOB"/>
+            <column name="big_icon_name" type="VARCHAR(30)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-4">
+        <createTable tableName="authorities">
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-5">
+        <createTable tableName="default_icons">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="small_icon" type="BLOB"/>
+            <column name="big_icon" type="BLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-6">
+        <createTable tableName="flyway_schema_history">
+            <column name="installed_rank" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="version" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="script" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="checksum" type="INT"/>
+            <column name="installed_by" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="installed_on" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="execution_time" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="success" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-7">
+        <createTable tableName="users">
+            <column name="username" type="VARCHAR(50)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="password" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-8">
+        <addUniqueConstraint columnNames="username, authority" constraintName="ix_auth_username" tableName="authorities"/>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-9">
+        <addUniqueConstraint columnNames="name, category_id" constraintName="unique_name_category" tableName="app"/>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-10">
+        <createIndex indexName="FK_APP_CATEGORY" tableName="app">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-11">
+        <createIndex indexName="FK_APP_SMALL_IMAGE_VIEW" tableName="app">
+            <column name="package_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-12">
+        <createIndex indexName="flyway_schema_history_s_idx" tableName="flyway_schema_history">
+            <column name="success"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-13">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="app" constraintName="FK_APP_CATEGORY" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="app_category" validate="true"/>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-14">
+        <addForeignKeyConstraint baseColumnNames="package_id" baseTableName="app" constraintName="FK_APP_PACKAGE" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="app_package" validate="true"/>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-15">
+        <addForeignKeyConstraint baseColumnNames="username" baseTableName="authorities" constraintName="fk_authorities_users" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="username" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-16">
+        <createView fullDefinition="false" remarks="VIEW" viewName="big_icon_view">select `appstore`.`app_package`.`id` AS `ID`,`appstore`.`app_package`.`big_icon` AS `BIG_ICON` from `appstore`.`app_package`</createView>
+    </changeSet>
+    <changeSet author="apanchenko (generated)" id="1555589162243-17">
+        <createView fullDefinition="false" remarks="VIEW" viewName="small_icon_view">select `appstore`.`app_package`.`id` AS `ID`,`appstore`.`app_package`.`small_icon` AS `SMALL_ICON` from `appstore`.`app_package`</createView>
+    </changeSet>
+</databaseChangeLog>
